@@ -7,7 +7,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
 import Navbar from "./components/shared/TheNavbar.vue";
 import Footer from "./components/shared/TheFooter.vue";

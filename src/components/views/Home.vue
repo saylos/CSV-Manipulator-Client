@@ -103,7 +103,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import axios from "axios";
 
 export default {
@@ -111,26 +111,26 @@ export default {
 		return {
 			// Initialize the useful variables
 			HasHeaders: true,
-			JSONFile: [],
-			LoadedFile: "",
-			ParsedFile: [],
+			JSONFile: [] as object[],
+			LoadedFile: "" as string,
+			ParsedFile: [] as string[][],
 			IsParsed: false,
-			Headers: []
+			Headers: [] as string[]
 		};
 	},
 	methods: {
-		LoadCSV: function(e) {
-			let vm = this;
+		LoadCSV: function(e: any) {
+			let vm = this as any;
 			// Utilize FileReader to load and read the uploaded file
 			if (window.FileReader) {
 				let reader = new FileReader();
 				reader.readAsText(e.target.files[0]);
 				// On load save the result in the variable
-				reader.onload = function(event) {
+				reader.onload = function(event: any) {
 					vm.LoadedFile = event.target.result;
 				};
 				// Manage errors
-				reader.onerror = function(evt) {
+				reader.onerror = function(evt: any) {
 					if (evt.target.error.name == "NotReadableError") {
 						alert("Canno't read file !");
 					}
@@ -139,18 +139,16 @@ export default {
 				alert("FileReader are not supported in this browser.");
 			}
 		},
-		ParseFile: function(csv, file) {
-			if (this.LoadedFile == "") {
+		ParseFile: function(loaded: string, parsed: string[][]) {
+			let vm = this as any;
+
+			if (vm.LoadedFile == "") {
 				alert("No file was loaded");
 				return;
 			}
-			let vm = this;
 			// Change the IsParsed status
 			vm.IsParsed = true;
-			let lines = csv.split("\n");
-
-			// Check if uploaded file was checked as having headers
-			vm.CheckHeaders();
+			let lines: string[] = loaded.split("\n");
 
 			if (vm.HasHeaders) {
 				vm.Headers = lines[0].split(",");
@@ -161,39 +159,43 @@ export default {
 				}
 			}
 			// Elaborate the body of the file, if it has Headers skip them
-			lines.map(function(line, indexLine) {
+			lines.map(function(line: string, indexLine: number) {
 				if (vm.HasHeaders && indexLine < 1) {
 					return;
 				}
-				file.push(line.split(","));
+				parsed.push(line.split(","));
 			});
 			// delete the last line that will be undefined
-			file.pop();
+			parsed.pop();
 		},
-		DeleteColumn: function(header) {
-			let vm = this;
+		DeleteColumn: function(header: string) {
+			let vm = this as any;
 			// Store the index of the interested column/header
 			let HeaderIndex = vm.Headers.indexOf(header);
 			// Delete it and delete all the corresponding values
 			vm.Headers.splice(HeaderIndex, 1);
-			vm.ParsedFile.map(function(data, i) {
+			vm.ParsedFile.map(function(data: string, i: number) {
 				vm.ParsedFile[i].splice(HeaderIndex, 1);
 			});
 		},
-		AddColumn: function(header) {
-			let vm = this;
+		AddColumn: function(header: string) {
+			let vm = this as any;
 			let headerIndex = vm.Headers.indexOf(header);
 			// Same thing as in the DeleteColumn method, here it adds a column and the corresponding cells with standard values
 			vm.Headers.splice(headerIndex + 1, 0, "Insert Header");
-			vm.ParsedFile.map(function(data, i) {
+			vm.ParsedFile.map(function(data: string, i: number) {
 				vm.ParsedFile[i].splice(headerIndex + 1, 0, "Insert Value");
 			});
 		},
-		ToJSON: function(headers, file) {
-			let result = [];
+		ToJSON: function(headers: string[], file: string[][]) {
+			let result: object[] = [];
+			let Obj: {
+				[key: string]: string;
+			};
+
 			// Parse through the ParsedFile
 			file.map(function(item, index) {
-				let Obj = {};
+				Obj = {};
 				// Skip the header
 				if (index < 1) {
 					return;
@@ -213,18 +215,22 @@ export default {
 
 			return result;
 		},
-		PostData: function(data) {
+		PostData: function(data: object[]) {
 			console.log(data);
 			axios.post("", data);
 		},
-		SaveJSON: function(destinationFile) {
-			let vm = this;
+		SaveJSON: function(destinationFile: object[]) {
+			let vm = this as any;
 			destinationFile = vm.ToJSON(vm.Headers, vm.ParsedFile);
 			console.log(destinationFile);
-			PostData(destinationFile);
+			vm.PostData(destinationFile);
 		},
 		CheckHeaders: function() {
-			this.HasHeaders = document.getElementById("HasHeaders").checked;
+			let vm = this as any;
+			let element = document.getElementById(
+				"HasHeaders"
+			) as HTMLInputElement;
+			vm.HasHeaders = element.checked;
 		}
 	}
 };
