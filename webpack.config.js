@@ -11,19 +11,21 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.ts?$/,
-				loader: "ts-loader",
-				exclude: /node_modules/
-			},
-			{
 				test: /\.vue$/,
 				loader: "vue-loader"
+			},
+			{
+				test: /\.ts?$/,
+				loader: "ts-loader"
 			},
 			{
 				test: /\.css$/,
 				use: ["vue-style-loader", "css-loader"]
 			}
 		]
+	},
+	resolve: {
+		extensions: [".js", ".vue", ".json", ".ts"]
 	},
 	devServer: {
 		historyApiFallback: true,

@@ -49,9 +49,7 @@
 	</nav>
 </template>
 
-<script lang="ts">
-export default {};
-</script>
+<script></script>
 
 <style>
 .navbar.navbar-3 .navbar-toggler-icon {

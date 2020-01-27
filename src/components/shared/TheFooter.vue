@@ -7,9 +7,7 @@
 	</footer>
 </template>
 
-<script lang="ts">
-export default {};
-</script>
+<script></script>
 
 <style>
 .footer div {
