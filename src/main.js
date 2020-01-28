@@ -3,16 +3,13 @@ import VueRouter from "vue-router";
 import App from "./App.vue";
 import { routes } from "./routes";
 require('../index.html'); // Required to bundle the html file into wwwroot
-
 Vue.use(VueRouter);
-
 const router = new VueRouter({
-	routes: routes,
-	mode: "history"
+    routes: routes,
+    mode: "history"
 });
-
 new Vue({
-	el: "#app",
-	router: router,
-	render: h => h(App)
+    el: "#app",
+    router: router,
+    render: h => h(App)
 });

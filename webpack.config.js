@@ -5,11 +5,19 @@ module.exports = {
 	entry: "./src/main.ts",
 	mode: "production",
 	output: {
-		path: path.resolve(__dirname, "dist"),
+		path: path.resolve(__dirname, "../wwwroot/js"),
 		filename: "build.js"
 	},
 	module: {
 		rules: [
+			{
+				test: /\.html$/,
+				loader: "file-loader",
+				options: {
+					name: 'index.html',
+					outputPath: "../"
+				},
+			},
 			{
 				test: /\.vue$/,
 				loader: "vue-loader"
