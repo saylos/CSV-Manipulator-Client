@@ -10,6 +10,15 @@ module.exports = {
 	},
 	module: {
 		rules: [
+			// Will be added later into server app
+			/* {
+				test: /\.html$/,
+				loader: "file-loader",
+				options: {
+					name: "index.html",
+					outputPath: "../"
+				}
+			}, */
 			{
 				test: /\.vue$/,
 				loader: "vue-loader"
